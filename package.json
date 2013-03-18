@@ -1,0 +1,32 @@
+{
+  "name": "action",
+  "version": "0.1.0",
+  "description": "dynamically composable functions",
+  "dependencies": {
+    "sliced": "0.0.5"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "bigfile": "~0.3.0",
+    "sourcegraph": "~0.5.0"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jkroso/action.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jkroso/action/issues"
+  },
+  "keywords": [
+    "function",
+    "stream",
+    "control-flow",
+    "async"
+  ],
+  "author": "Jake Rosoman",
+  "license": "MIT"
+}

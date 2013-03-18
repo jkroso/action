@@ -1,0 +1,21 @@
+{
+  "name": "action",
+  "repo": "jkroso/action",
+  "description": "dynamically composable functions",
+  "version": "0.1.0",
+  "keywords": [
+    "function",
+    "stream",
+    "control-flow",
+    "async"
+  ],
+  "dependencies": {
+    "aheckmann/sliced": "*"
+  },
+  "main": "src/index.js",
+  "scripts": [
+    "src/index.js"
+  ],
+  "styles": [],
+  "license": "MIT"
+}

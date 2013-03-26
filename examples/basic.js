@@ -17,7 +17,7 @@ var log = action(function(){
 	console.log.apply(console, arguments)
 })
 
-start.connect(up).connect(log)
-start.connect(down).connect(log)
+start.then(up).then(log)
+start.then(down).then(log)
 
 start.send(2)

@@ -26,7 +26,7 @@ function Action(fn){
 	this.pin('out')
 }
 
-Action.prototype.when = function(pin, action){
+Action.prototype.on = function(pin, action){
 	if (typeof pin != 'string') {
 		action = pin
 		pin = typeof pin == 'function' && pin.name 
@@ -38,6 +38,7 @@ Action.prototype.when = function(pin, action){
 	return this
 }
 
+Action.prototype.then =
 Action.prototype.connect = function(pin, action){
 	if (typeof pin != 'string') {
 		action = pin

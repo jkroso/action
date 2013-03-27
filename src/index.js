@@ -2,7 +2,11 @@
 var slice = require('sliced')
 
 module.exports = function(fn){
-	return new Action(fn)
+	return new Action(fn || forward)
+}
+
+function forward(){
+	this.out.apply(this, arguments)
 }
 
 module.exports.class = function(fn, pins){
@@ -29,12 +33,11 @@ function Action(fn){
 Action.prototype.on = function(pin, action){
 	if (typeof pin != 'string') {
 		action = pin
-		pin = typeof pin == 'function' && pin.name 
-			? pin.name
+		pin = typeof pin == 'function' 
+			? pin.name || 'out'
 			: 'out'
 	}
-	if (typeof action == 'function') action.send = action;
-	(this.pins[pin] || (this.pins[pin] = [])).push(action)
+	(this.pins[pin] || (this.pins[pin] = [])).push(toAction(action))
 	return this
 }
 
@@ -46,8 +49,7 @@ Action.prototype.connect = function(pin, action){
 			? pin.name
 			: 'out'
 	}
-	if (typeof action == 'function') action = new Action(action);
-	(this.pins[pin] || (this.pins[pin] = [])).push(action)
+	(this.pins[pin] || (this.pins[pin] = [])).push(toAction(action))
 	return action
 }
 
@@ -65,4 +67,15 @@ Action.prototype.dispatch = function(pin){
 		act.send.apply(act, args)
 	}
 	return this
+}
+
+function toAction(x){
+	if (typeof x == 'function') return new Action(x)
+	if (x instanceof Action) return x
+	if (x.on == null) x.on = Action.prototype.on
+	if (x.pin == null) x.pins = {}
+	if (x.then == null) x.then = Action.prototype.then
+	if (x.dispatch == null) x.dispatch = Action.prototype.dispatch
+	if (x.send == null) x.send = x.action
+	return x
 }

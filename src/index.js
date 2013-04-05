@@ -83,17 +83,6 @@ function forward(){
 
 module.exports.Action = Action
 module.exports.force = toAction
-module.exports.class = function(fn, pins){
-	return function(){
-		var act = new Action(fn)
-		if (pins) {
-			for (var i = 0, len = pins.length; i < len; i++) {
-				act.pin(pins[i])
-			}
-		}
-		return act
-	}
-}
 
 // aliases
 Action.prototype.connect = Action.prototype.then

@@ -14,34 +14,34 @@ var key = action(function(e){
 	}
 })
 
-key.connect(function left(e){
+key.then(function left(e){
 		e.key = 'left'
 		e.x--
-		this.out(e)
+		this.stdout(e)
 	})
-	.connect('out', log)
+	.then('stdout', log)
 
-key.connect(function up(e){
+key.then(function up(e){
 		e.key = 'up'
 		e.y--
-		this.out(e)
+		this.stdout(e)
 	})
-	.connect('out', log)
+	.then('stdout', log)
 
-key.connect(function right(e){
+key.then(function right(e){
 		e.key = 'right'
 		e.x++
-		this.out(e)
+		this.stdout(e)
 	})
-	.connect('out', log)
+	.then('stdout', log)
 
-key.connect(function down(e){
+key.then(function down(e){
 		e.key = 'down'
 		e.y++
-		this.out(e)
-	}).connect('out', log)
+		this.stdout(e)
+	}).then('stdout', log)
 
-key.send({which:37, x:10, y:10})
-key.send({which:38, x:10, y:10})
-key.send({which:39, x:10, y:10})
-key.send({which:40, x:10, y:10})
+key.stdin({which:37, x:10, y:10})
+key.stdin({which:38, x:10, y:10})
+key.stdin({which:39, x:10, y:10})
+key.stdin({which:40, x:10, y:10})

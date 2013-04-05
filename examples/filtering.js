@@ -4,14 +4,12 @@ var action = require('../src')
 function filter(exp){
 	var pred = Function('v', 'return v '+exp)
 	return action(function(v){
-		if (pred(v)) this.dispatch('out', v)
+		if (pred(v)) this.dispatch('stdout', v)
 		else this.dispatch('fail', v)
 	})
 }
 
-var through = action(function(v){
-	this.dispatch('out', v)
-})
+var through = module.exports = action()
 
 through.on(log('% is '))
 	.then(filter('> 5'))
@@ -22,7 +20,7 @@ through.on(log('% is '))
 		.on('fail', log('and > 9\n'))
 
 for (var i = 0, len = 15; i < len; i++) {
-	through.send(i)
+	through.stdin(i)
 }
 
 function log(msg){
@@ -30,5 +28,3 @@ function log(msg){
 		process.stdout.write(msg.replace(/%/, v))
 	})
 }
-
-module.exports = through

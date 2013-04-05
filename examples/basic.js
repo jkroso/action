@@ -2,15 +2,15 @@
 var action = require('..')
 
 var start = action(function(v){
-	this.out(v)
+	this.stdout(v)
 })
 
 var up = action(function(v){
-	this.out('up', v + 1)
+	this.stdout('up', v + 1)
 })
 
 var down = action(function(v){
-	this.out('down', v - 1)
+	this.stdout('down', v - 1)
 })
 
 var log = action(function(){
@@ -20,4 +20,4 @@ var log = action(function(){
 start.then(up).then(log)
 start.then(down).then(log)
 
-start.send(2)
+start.stdin(2)

@@ -63,13 +63,12 @@ Action.prototype.dispatch = function(pin){
 // (function|object|action) -> action
 function toAction(x){
 	if (typeof x == 'function') return new Action(x)
-	if (x.on == null) x.on = Action.prototype.on
+	if (x instanceof Action) return x
 	if (x.pins == null) x.pins = {}
+	if (x.on == null) x.on = Action.prototype.on
 	if (x.then == null) x.then = Action.prototype.then
 	if (x.dispatch == null) x.dispatch = Action.prototype.dispatch
-	if (x.send == null) x.stdin = x.send = x.action
 	return x
-	if (x instanceof Action) return x
 }
 
 // set exports

@@ -81,7 +81,8 @@ function forward(){
 }
 
 module.exports.Action = Action
-module.exports.force = toAction
+module.exports.toAction = toAction
+module.exports.parseConnection = parseConnection
 
 // aliases
 Action.prototype.connect = Action.prototype.then

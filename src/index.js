@@ -6,13 +6,9 @@
 var slice = require('sliced')
 
 function Action(fn){
-	if (typeof fn == 'function') {
-		this.stdin = this.action = this.send = fn
-	} else {
-		for (var f in fn) this[f] = fn[f]
-	}
+	if (typeof fn == 'function') this.stdin = fn
+	else for (var f in fn) this[f] = fn[f]
 	this.pins = {}
-	this.pin('stdout')
 }
 
 Action.prototype.on = function(pin, action){
@@ -46,11 +42,6 @@ Action.prototype.then = function(pin, action){
 	return con.action = toAction(action)
 }
 
-Action.prototype.pin = function(name){
-	this[name] = this.dispatch.bind(this, name)
-	return this
-}
-
 Action.prototype.dispatch = function(pin){
 	var args = slice(arguments, 1)
 	var cons = this.pins[pin]
@@ -60,13 +51,28 @@ Action.prototype.dispatch = function(pin){
 	return this
 }
 
-// (function|object|action) -> action
+Action.prototype.pin = function(name){
+	this[name] = function(){
+		var cons = this.pins[name], a, c
+		if (!cons) return this
+		for (var i = 0, len = cons.length; i < len; i++) {
+			(a = (c = cons[i]).action)[c.to].apply(a, arguments)
+		}
+		return this
+	}
+	return this
+}
+
+Action.prototype.pin('stdout')
+
+// (Function|Object|Action) -> Action
 function toAction(x){
-	if (typeof x == 'function') return new Action(x)
 	if (x instanceof Action) return x
+	if (typeof x == 'function') return new Action(x)
 	if (x.pins == null) x.pins = {}
 	if (x.on == null) x.on = Action.prototype.on
 	if (x.then == null) x.then = Action.prototype.then
+	if (x.pin == null) x.pin = Action.prototype.pin
 	if (x.dispatch == null) x.dispatch = Action.prototype.dispatch
 	return x
 }

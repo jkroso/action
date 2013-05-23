@@ -1,32 +1,19 @@
-EXPORT= action
-GRAPH= node_modules/.bin/sourcegraph.js src/index.js -p javascript,nodeish
-BIGFILE= node_modules/.bin/bigfile.js -x $(EXPORT) -p javascript,nodeish
-REPORTER= spec
+GRAPH=node_modules/.bin/sourcegraph.js -p nodeish,mocha
+COMPILE=node_modules/.bin/_bigfile -p nodeish
+REPORTER=dot
 
-all: test/built.js browser
-
-browser: dist dist/action.js
-	@du -bah dist/*
-
-dist:
-	@mkdir -p dist
-
-dist/action.js: dist
-	@$(GRAPH) | $(BIGFILE) > $@
+all: test/built.js
+	open test/index.html
 
 test:
 	@node_modules/.bin/mocha test/*.test.js \
-		-R $(REPORTER)
+		--reporter $(REPORTER) \
+		--bail
 
 clean:
-	@rm -rf dist
-	@rm -rf test/built.js
+	@rm -f test/built.js
 
-test/built.js: src/* test/*
-	@node_modules/.bin/sourcegraph.js test/browser.js \
-		--plugins mocha,nodeish,javascript \
-		| node_modules/.bin/bigfile.js \
-			--export null \
-			--plugins nodeish,javascript > $@
+test/built.js: index.js test/*
+	@$(GRAPH) test/browser.js | $(COMPILE) -x null > $@
 
-.PHONY: all test clean browser
+.PHONY: all test clean

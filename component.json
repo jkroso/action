@@ -9,13 +9,9 @@
     "control-flow",
     "async"
   ],
-  "dependencies": {
-    "aheckmann/sliced": "*"
-  },
-  "main": "src/index.js",
+  "dependencies": {},
   "scripts": [
-    "src/index.js"
+    "index.js"
   ],
-  "styles": [],
   "license": "MIT"
 }
